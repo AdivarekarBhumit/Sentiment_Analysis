@@ -7,7 +7,7 @@ from nltk.corpus import stopwords
 import re 
 
 
-stop_words = set(stopwords('english'))
+stop_words = set(stopwords.words('english'))
 
 contractions = { 
             "ain't": "am not",
@@ -89,7 +89,7 @@ contractions = {
 
 ## The embeddings are already stored in pickle file
 def open_csv(path='./Data/yelp_dataset.txt'):
-    df = pd.read_csv(path, sep='\t')
+    df = pd.read_csv(path, sep='\t', header=None)
     return df 
 
 def clean_text(text, remove_stopwords=True):
@@ -111,3 +111,9 @@ def clean_text(text, remove_stopwords=True):
 
     return text
 
+def load_word2vec(path='P:/Pretrained Word2Vec Models/', fasttext=True):
+
+    if fasttext:
+        return pb.load(open(path + 'fasttext300d.pb', 'rb'))
+    else:
+        return pb.load(open(path + 'glove42B300d.pickle', 'rb'))
