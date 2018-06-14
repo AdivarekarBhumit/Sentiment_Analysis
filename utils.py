@@ -129,15 +129,15 @@ def load_word2vec(path='P:/Pretrained Word2Vec Models/', fasttext=True):
     else:
         return pb.load(open(path + 'glove42B300d.pickle', 'rb'))
 
-def create_embeddings_of_word2vec(word2vec):
+def create_embeddings_of_word2vec():
 
-    embedding_index = {}
+    embedding_index = load_word2vec()
 
-    for line in word2vec:
-        values = line.split(' ')
-        words = values[0]
-        embedding_vector = np.asarray(values[1:], dtype='float32')
-        embedding_index[word] = embedding_vector
+    # for line in word2vec:
+    #     values = line.split(' ')
+    #     words = values[0]
+    #     embedding_vector = np.asarray(values[1:], dtype='float32')
+    #     embedding_index[words] = embedding_vector
     
     return embedding_index
 
@@ -160,12 +160,11 @@ def final_embedding_matrix(voc_to_int, embedding_index):
     nb_words = len(voc_to_int)
 
     word_embed_matrix = np.zeros((nb_words, embed_dim), dtype='float32')
-
     for word, i in voc_to_int.items():
         if word in embedding_index:
             word_embed_matrix[i] = embedding_index[word]
         else:
-            new_embed = np.asarray(np.random.uniform(-1.0, 1.0, embed_dim))
+            new_embed = np.array(np.random.uniform(-1.0, 1.0, embed_dim))
             embedding_index[word] = new_embed
             word_embed_matrix[i] = new_embed
     
