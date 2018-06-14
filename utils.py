@@ -111,9 +111,62 @@ def clean_text(text, remove_stopwords=True):
 
     return text
 
+def word_count(cleaned_text_list):
+    wc = {}
+    for sentence in cleaned_text_list:
+        for word in sentence.split():
+            if word not in wc:
+                wc[word] = 1
+            else:
+                wc[word] += 1
+    
+    return wc
+
 def load_word2vec(path='P:/Pretrained Word2Vec Models/', fasttext=True):
 
     if fasttext:
         return pb.load(open(path + 'fasttext300d.pb', 'rb'))
     else:
         return pb.load(open(path + 'glove42B300d.pickle', 'rb'))
+
+def create_embeddings_of_word2vec(word2vec):
+
+    embedding_index = {}
+
+    for line in word2vec:
+        values = line.split(' ')
+        words = values[0]
+        embedding_vector = np.asarray(values[1:], dtype='float32')
+        embedding_index[word] = embedding_vector
+    
+    return embedding_index
+
+def vocab_to_int(word_count, embedding_index):
+    voc_to_int = {}
+    value = 0
+    for word, count in word_count.items():
+        if word in embedding_index:
+            voc_to_int[word] = value
+            value += 1
+
+    int_to_voc = {}
+    for word, value in voc_to_int.items():
+        int_to_voc[value] = word
+
+    return voc_to_int, int_to_voc
+
+def final_embedding_matrix(voc_to_int, embedding_index):
+    embed_dim = 300
+    nb_words = len(voc_to_int)
+
+    word_embed_matrix = np.zeros((nb_words, embed_dim), dtype='float32')
+
+    for word, i in voc_to_int.items():
+        if word in embedding_index:
+            word_embed_matrix[i] = embedding_index[word]
+        else:
+            new_embed = np.asarray(np.random.uniform(-1.0, 1.0, embed_dim))
+            embedding_index[word] = new_embed
+            word_embed_matrix[i] = new_embed
+    
+    return word_embed_matrix
