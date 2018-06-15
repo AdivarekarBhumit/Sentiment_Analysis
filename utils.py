@@ -148,7 +148,8 @@ def vocab_to_int(word_count, embedding_index):
         if word in embedding_index:
             voc_to_int[word] = value
             value += 1
-
+        else:
+            voc_to_int[word] = np.random.randint(2000, 2040)
     int_to_voc = {}
     for word, value in voc_to_int.items():
         int_to_voc[value] = word
