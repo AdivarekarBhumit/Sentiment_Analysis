@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import keras 
 from keras.models import model_from_json
 from keras.preprocessing import text, sequence
@@ -37,3 +38,22 @@ pos_sentiment = prediction[0][1]
 
 print('Positive Sentiment:{:.2f}%'.format(pos_sentiment * 100))
 print('Negative Sentiment:{:.2f}%'.format(neg_sentiment * 100))
+
+## Plot a pie chart for sentiment
+labels = ['Positive', 'Negative']
+sizes = [pos_sentiment * 100, neg_sentiment * 100]
+colors = ['blue', 'green']
+
+fig1, ax1 = plt.subplots()
+
+patches, texts, autotexts = ax1.pie(sizes, colors=colors, labels=labels, autopct='%1.2f%%', startangle=90)
+
+for text in texts:
+    text.set_color('black')
+
+for autotext in autotexts:
+    autotext.set_color('black')
+
+ax1.axis('equal')
+plt.tight_layout()
+plt.show()
