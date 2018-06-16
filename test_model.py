@@ -28,11 +28,12 @@ seq = []
 for word in text.split():
     seq.append(vocab_to_int[word])
 
-seq = sequence.pad_sequences(seq, maxlen=max_len)
+seq = sequence.pad_sequences([seq], maxlen=max_len)
 
-prediction = model.predict_classes(seq)
+prediction = model.predict(seq)
 
-if prediction == 0:
-    print('Negative')
-else:
-    print('Positive')
+neg_sentiment = prediction[0][0]
+pos_sentiment = prediction[0][1]
+
+print('Positive Sentiment:{:.2f}%'.format(pos_sentiment * 100))
+print('Negative Sentiment:{:.2f}%'.format(neg_sentiment * 100))
