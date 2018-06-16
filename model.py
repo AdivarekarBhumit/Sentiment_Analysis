@@ -10,7 +10,7 @@ from keras.layers import Input, Dense, Embedding, SpatialDropout1D, concatenate
 from keras.layers import GRU, Bidirectional, GlobalAveragePooling1D, GlobalMaxPooling1D
 from keras.callbacks import TensorBoard
 from sklearn.model_selection import train_test_split
-
+import pickle as pb    
 
 embed_size = 300
 
@@ -41,6 +41,15 @@ max_len = 0
 for seq in num_sentences:
     max_len = max(max_len, len(seq))
 
+args_dict = {
+    'vocab_to_int':vocab_to_int,
+    'int_to_vocab':int_to_vocab,
+    'maxlen':max_len
+}
+
+with open('helper.pb', 'wb') as f:
+    pb.dump(args_dict, f)
+
 data = pad_sequences(num_sentences, maxlen=max_len)
 
 labels = np.array(labels)
@@ -51,7 +60,7 @@ max_features = 2040
 def get_model():
     inp = Input(shape=(max_len, ))
     x = Embedding(max_features, embed_size, weights=[word_embedding_matrix])(inp)
-    x = SpatialDropout1D(0.5)(x)
+    x = SpatialDropout1D(0.75)(x)
     x = Bidirectional(GRU(100, return_sequences=True,activation='relu', dropout=0.3, recurrent_dropout=0.))(x)
     avg_pool = GlobalAveragePooling1D()(x)
     max_pool = GlobalMaxPooling1D()(x)
@@ -73,5 +82,9 @@ X_train, X_val, Y_train, Y_val = train_test_split(data, labels, train_size=0.90,
 tb = TensorBoard(log_dir='./Graph', histogram_freq=1, write_graph=True)
 model.fit(X_train, Y_train, batch_size=32, epochs=10, validation_data=(X_val, Y_val), callbacks=[tb])
 
+model_json = model.to_json()
+with open('sentiment.json', 'w') as f:
+    f.write(model_json)
+
 ## Save model
-model.save_weights('sentiment150cells.h5')
+model.save_weights('sentimentnewcells.h5')
