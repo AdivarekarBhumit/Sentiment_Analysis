@@ -42,7 +42,7 @@ print('Negative Sentiment:{:.2f}%'.format(neg_sentiment * 100))
 ## Plot a pie chart for sentiment
 labels = ['Positive', 'Negative']
 sizes = [pos_sentiment * 100, neg_sentiment * 100]
-colors = ['blue', 'green']
+colors = ['pink', 'yellow']
 
 fig1, ax1 = plt.subplots()
 
@@ -56,4 +56,5 @@ for autotext in autotexts:
 
 ax1.axis('equal')
 plt.tight_layout()
-plt.show()
+plt.plot()
+plt.savefig('sentiment.jpg')
