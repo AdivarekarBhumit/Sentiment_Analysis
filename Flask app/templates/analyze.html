@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv='cache-control' content='no-cache'>
+        <meta http-equiv='expires' content='0'>
+        <meta http-equiv='pragma' content='no-cache'>
+        <title>Sentiment Analysis</title>
+    </head>
+    <body>
+        <form name="result" action='http://localhost:5000' method="POST">
+            <div class="container" style="text-align: center">
+                <label><strong>Original Comment</strong></label>
+                <br><br>
+                <textarea rows="5" cols="100">{{og_comment}}</textarea>
+                <br><br>
+                <img src="{{path}}" alt="Sentiment Pie Diagram">
+                <input type="submit" value="Go Back">
+            </div>
+        </form>
+    </body>
+</html>
