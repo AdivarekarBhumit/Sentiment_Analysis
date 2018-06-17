@@ -41,6 +41,10 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    if os.path.exists('./static/'):
+        pass
+    else:
+        os.mkdir('./static/')
     for i in glob.glob('./static/*.jpg'):
         os.remove(i)
     return render_template('index.html')
