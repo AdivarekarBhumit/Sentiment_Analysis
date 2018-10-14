@@ -80,11 +80,13 @@ X_train, X_val, Y_train, Y_val = train_test_split(data, labels, train_size=0.90,
 ## Tensorboard Callback
 
 tb = TensorBoard(log_dir='./Graph', histogram_freq=1, write_graph=True)
-model.fit(X_train, Y_train, batch_size=32, epochs=10, validation_data=(X_val, Y_val), callbacks=[tb])
+model.fit(X_train, Y_train, batch_size=32, epochs=15, validation_data=(X_val, Y_val), callbacks=[tb])
 
-model_json = model.to_json()
-with open('sentiment.json', 'w') as f:
-    f.write(model_json)
+# model_json = model.to_json()
+# with open('sentiment.json', 'w') as f:
+#     f.write(model_json)
 
-## Save model
-model.save_weights('sentimentnewcells.h5')
+# ## Save model
+# model.save_weights('sentimentnewcells.h5')
+
+model.save('sentiment.hdf5')
